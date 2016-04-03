@@ -78,7 +78,9 @@ public class Chunk implements Runnable{
             while((line = bufferedReader.readLine()) != null) {
             	if(line.compareTo("") != 0){
 	                nums = line.split(";");
-	                this.foliage.add(new Foliage(new Position(Double.parseDouble(nums[0]),Double.parseDouble(nums[1]),Double.parseDouble(nums[2])),Integer.parseInt(nums[3])));
+	                Foliage f = new Foliage(new Position(Double.parseDouble(nums[0]),Double.parseDouble(nums[1]),Double.parseDouble(nums[2])),Integer.parseInt(nums[3]));
+	                this.foliage.add(f);
+	                chunk_map[(int)Double.parseDouble(nums[0])][(int)Double.parseDouble(nums[1])][(int)Double.parseDouble(nums[2])].attach_floiage(f);
                 }
             }
             bufferedReader.close();     
