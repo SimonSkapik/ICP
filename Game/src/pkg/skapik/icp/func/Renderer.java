@@ -645,10 +645,10 @@ public class Renderer implements GLEventListener  {
 
         
         // Pripojeni kamery - to bych asi pak prehodil do Game.
-		my_cam = new Camera();
+		/*my_cam = new Camera();
 		cam_thread = my_cam;
 		my_cam.start_cam();
-		cam_thread.start();
+		cam_thread.start();*/
 	}
 	
 	public void bind_texture(int tex){
