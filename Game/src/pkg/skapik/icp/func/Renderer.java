@@ -1,20 +1,15 @@
 package pkg.skapik.icp.func;
 
-import java.awt.AWTException;
-import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -22,13 +17,9 @@ import javax.media.opengl.GLContext;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLException;
 import javax.media.opengl.glu.GLU;
-import javax.swing.JFrame;
-import javax.xml.soap.Text;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -115,7 +106,7 @@ public class Renderer implements GLEventListener  {
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		update();
+		//update();
         render(drawable);
 	}
 
@@ -206,6 +197,7 @@ public class Renderer implements GLEventListener  {
         foliage_0 = hbar_bg+8;
         foliage_1 = hbar_bg+9;
         foliage_2 = hbar_bg+10;
+        
 	    gl.glNewList(hbar_bg, GL2.GL_COMPILE );
 	    
 	    // activate and specify pointer to vertex array
@@ -636,14 +628,12 @@ public class Renderer implements GLEventListener  {
         
         this.skybox = new Skybox(800,gl);
         world_gen = new World_generator();
-        //this.world_map = world_gen.get_map();
-        world_list = gl.glGenLists(1);
         this.chunk_loader = new Chunk_Loader(this);
         chunk_loader.load_chunks(chunk_list, game.get_player().get_view_distance());
         
+        //this.world_map = world_gen.get_map();
+        //world_list = gl.glGenLists(1);
         //this.pre_render_world();
-
-        
         // Pripojeni kamery - to bych asi pak prehodil do Game.
 		/*my_cam = new Camera();
 		cam_thread = my_cam;
@@ -698,7 +688,7 @@ public class Renderer implements GLEventListener  {
         gl.glLoadIdentity();
 	}
 	
-	private void update() {
+/*	private void update() {
         this.pre_render_world();
     }
     
@@ -711,7 +701,7 @@ public class Renderer implements GLEventListener  {
 		}
 		gl.glEndList();
 	}
-	
+*/	
     private void render(GLAutoDrawable drawable) {
      	frame_count++;
      	Random rnd = new Random();
@@ -726,6 +716,7 @@ public class Renderer implements GLEventListener  {
         glu.gluLookAt(player_pos.getX_D(), player_pos.getY_D(), player_pos.getZ_D(),
         		player_dir.getX_D(), player_dir.getY_D(), player_dir.getZ_D(), 0, 1, 0); // postaveni kamery at cumi tam co player
         
+        
         Vector sun_rot = new Vector(game.get_player().get_view_direction());
         sun_rot.setY(0);
         Vector y_axis = new Vector(0,1,0);
@@ -736,6 +727,7 @@ public class Renderer implements GLEventListener  {
        	sun_rot.rotate(new Vector((sun_rot).getZ_D(),0,-sun_rot.getX_D()), (float)((sun_angle%Math.PI) + Math.PI));
         double[] light_color_2 = light_spectrum.get(1, (int)((sun_angle*(1800/Math.PI))+1600)%3600);
         float[] light_color = new float[]{(float)(light_color_2[2]/255.0),(float)(light_color_2[1]/255.0),(float)(light_color_2[0]/255.0)};
+        
         if(sun_angle < Math.PI){
         	if(this.skybox.is_day()){
         		this.skybox.pre_draw(gl, Custom_Draw.float_color(0.07f*1,0.153f*1,0.239f*1,1.0f));
@@ -786,8 +778,10 @@ public class Renderer implements GLEventListener  {
         //gl.glEnable(GL2.GL_LIGHTING);
         gl.glPopMatrix();
         
+        
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("grey"), 0);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, Custom_Draw.float_color("black"), 0);
+
         if(this.game.get_player().is_in_water()){
         	fogColor = new float[]{0.07f,0.153f,0.239f,1.0f};
 	        gl.glFogi(GL2.GL_FOG_MODE, GL2.GL_LINEAR);
@@ -797,25 +791,12 @@ public class Renderer implements GLEventListener  {
 	        gl.glFogf(GL2.GL_FOG_END, 10.0f); // Fog End Depth
 	        gl.glEnable(GL2.GL_FOG);
         }else{
-        	/*fogColor = new float[]{0.07f*4,0.153f*4,0.239f*4,1.0f};
-	        gl.glFogi(GL2.GL_FOG_MODE, GL2.GL_LINEAR);
-	        gl.glFogfv(GL2.GL_FOG_COLOR, fogColor, 0); 
-	        gl.glHint(GL2.GL_FOG_HINT, GL2.GL_DONT_CARE);
-	        gl.glFogf(GL2.GL_FOG_START, 200.0f); // Fog Start Depth 
-	        gl.glFogf(GL2.GL_FOG_END, 220.0f); // Fog End Depth
-	        gl.glEnable(GL2.GL_FOG);*/
         	gl.glDisable(GL2.GL_FOG);
         }
-   
-      	//TrackImage(&PICTURE_X, &PICTURE_Y); //vrati souradnice vyhledaneho objektu
-
-        /*gl.glPushMatrix();
-        gl.glTranslated(player_pos.getX_D()-(0.375), player_pos.getY_D()-(1.8-0.18), player_pos.getZ_D()-(0.375));
-        //game.get_player().draw_boundery(gl);
-        gl.glPopMatrix();*/
         
         /////// !!!!!!! A KRESLIIIIMEEEE !!!!!!!! \\\\\\\\
         skybox_texture.bind();
+        
         gl.glPushMatrix();
         gl.glTranslatef(-400.0f, -400.0f, -400.0f);
     	skybox.draw(gl,1);
@@ -927,7 +908,7 @@ public class Renderer implements GLEventListener  {
 	    	
     	}	
 	    	
-	    gl.glFlush();   
+	    gl.glFlush();
     	
     	game.get_player().Update();
  		if(frame_count >= 360000000){

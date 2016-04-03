@@ -27,7 +27,7 @@ public class MyKeyListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		this.game.key_typed(e.getKeyCode(), e.getID());
+
 	}
 
 }

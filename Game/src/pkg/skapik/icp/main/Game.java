@@ -92,13 +92,13 @@ public class Game{
 		// Nacteni knihoven
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-		// Jak velky onko?
+		// Jak velky okno?
 	    screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 	    /*width = 1280;// screenSize.width; //(int) screenSize.getWidth();
 	    height = 762;// screenSize.height; //(int) screenSize.getHeight();
 	    */
 	    
-	    // Neviditelny kurzor
+	    
 	    BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	    Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor((Image)cursorImg, new Point(0, 0), "blank cursor");
 	    
@@ -175,10 +175,6 @@ public class Game{
 		if(code == 87 || code == 83 || code == 65 || code == 68 || code == 32 || code == 17){
 			player.Controll(code, id);
 		}
-	}
-
-	public void key_typed(int keyCode, int id) { // NEVIM :D
-		
 	}
 
 	public void mouse_dragged(int button, int x, int y) { // Full out spraaaaay!
