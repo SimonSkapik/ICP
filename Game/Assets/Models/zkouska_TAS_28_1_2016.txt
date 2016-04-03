@@ -1,0 +1,19 @@
+Každý pøíklad po skonèení vybere a zadá nový
+
+1. Jazyk L = {w=u*u^R}
+	u ...slovo
+	u^R ...jeho reverze
+a) dokažte že jazyk není rozpoznatelný koneèným automatem
+b) sestrojte Turingùv stroj T takový, že 
+Akc(T) = L
+Zam(T) = Sigma* - L
+Cyk(T) = prázdná množina
+
+2. (nìjak tak) 
+	Pokud je èlovìk vzdìlaný, pak existuje vzdìlanec, který ho nezná.
+	Pro èlovìka platí, že pokud ho znají všichni vzdìlanci, pak sám není vzdìlanec.
+	Nìkterý èlovìk nemusí znát sám sebe,
+
+Dokažte že druhá a tøetí vìta vychází z první vìty, tedy že 1 -> 2 a 1 -> 3
+
+3. Vyslovte a dokažte problém zastavení pro TS. 
