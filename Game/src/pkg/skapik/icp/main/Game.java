@@ -51,15 +51,8 @@ public class Game{
     public static Rectangle screenSize;
     public static JFrame frame;
 
-	// OpenCV
-	private boolean running = false;
-	private Thread thread;
-	private Camera my_cam;
-	private Thread cam_thread;
 	private BufferedImage cursorImg;
 	private Cursor blankCursor;
-	// Timeing
-	private long before, after;
 	
 	// Game
 	private Player player;
@@ -112,7 +105,7 @@ public class Game{
 	    frame.add(canvas);
 	    
 	    // Pridat platno a vykreslovaci smycku
-	    animator = new FPSAnimator(1000);
+	    animator = new FPSAnimator(30);
 	    animator.add(canvas);
 	    animator.start();
 	    

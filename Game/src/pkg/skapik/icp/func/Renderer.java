@@ -84,6 +84,7 @@ public class Renderer implements GLEventListener  {
     private Thread cam_thread;
 	private Texture cam_texture;
 	
+
 	public Renderer(Game game_instance){
 
 		game = game_instance;
