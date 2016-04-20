@@ -135,7 +135,7 @@ public class Block {
 		this.attached_foliage = null;
 		faces_to_draw = 0;
 	}
-	
+
 	public Block(int id) {
 		this.block_id = id;
 		this.position = null;
@@ -341,7 +341,9 @@ public class Block {
 	public void Use(Player player,Chunk Ch){
 		switch(this.block_id){
 			case OAK_LOG:{
-				Ch.put_block_in_chunk(Block.WORKBENCH, this.position);
+				if(player.get_block_in_hand() == Block.AXE){
+					Ch.put_block_in_chunk(Block.WORKBENCH, this.position);
+				}
 			} break;
 			case WORKBENCH:{
 				player.open_block_interface(this.usable);
