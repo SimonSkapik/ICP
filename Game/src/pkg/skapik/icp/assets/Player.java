@@ -1,6 +1,7 @@
 package pkg.skapik.icp.assets;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -654,8 +655,15 @@ public class Player implements Creature{
 					        	gl.glRotatef(180, 1, 0, 0);
 					        	gl.glScaled(0.15,0.15,1);
 					        	gl.glDisable(GL2.GL_TEXTURE_2D);
+					        	gl.glPushMatrix();
+					        	gl.glColor3f(1,1,1);
+					        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white"), 0);
+					        	gl.glLineWidth(3);
+					        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
+					        	gl.glPopMatrix();
 					        	gl.glColor3f(0,0,0);
 					        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("black"), 0);
+					        	gl.glLineWidth(1);
 					        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
 					        	gl.glEnable(GL2.GL_TEXTURE_2D);
 						        gl.glPopMatrix();
@@ -718,8 +726,15 @@ public class Player implements Creature{
 			        	gl.glRotatef(180, 1, 0, 0);
 			        	gl.glScaled(0.13,0.13,1);
 			        	gl.glDisable(GL2.GL_TEXTURE_2D);
+			        	gl.glPushMatrix();
+			        	gl.glColor3f(1,1,1);
+			        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white"), 0);
+			        	gl.glLineWidth(3);
+			        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(hotbar_count[block_id-1]));
+			        	gl.glPopMatrix();
 			        	gl.glColor3f(0,0,0);
 			        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("black"), 0);
+			        	gl.glLineWidth(1);
 			        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(hotbar_count[block_id-1]));
 			        	gl.glEnable(GL2.GL_TEXTURE_2D);
 				        gl.glPopMatrix();
@@ -813,38 +828,70 @@ public class Player implements Creature{
 		return false;
 	}
 
-	public void inventory_click(Point point) {
+	public void inventory_click(MouseEvent m) {
+		Point point = m.getPoint();
+		int btn = m.getButton();
 		if(alive){
 			int x = point.x;
 			int y = point.y;
 			int index = -1;
 			int target_item = 0;
 			int target_item_count = 0;
+			int half_stack = 0;
 			if(y < renderer.height*0.8){
-				x -= inv_off_x;
-				y -= inv_off_y;
-				if(x >= 0 && x <= inv_win_x && y >=0 && y <= inv_win_y){
-					if(x % inv_slot_x < inv_item_x){
-						index = (int)(x/inv_slot_x);
-					}
-					if((index >= 0) && ((y % inv_slot_y) < inv_item_y)){
-						index += 9*(int)(y/inv_slot_y);
+				if(this.using_block){
+					if(x < renderer.width*0.51){// recept
+						index = this.block_in_use.get_index(x,y,0);
+						if(index >= 0){
+							if(inventory_holding >= 0){
+								target = this.block_in_use.get_inventory();
+								target_count = this.block_in_use.get_inventory_count();
+							}else{
+								if(this.block_in_use.get_inventory()[index] >= 0){
+									source = this.block_in_use.get_inventory();
+									source_count = this.block_in_use.get_inventory_count();
+									//inventory_holding = index;
+								}
+							}
+						}
 					}else{
-						index = -1;
-					}
-				}
-				if(index >= 0){
-					if(inventory_holding >= 0){
-						target = inventory;
-						target_count = inventory_count;
-					}else{
-						if(inventory[index] >= 0){
-							source = inventory;
-							source_count = inventory_count;
-							//inventory_holding = index;
+						if(inventory_holding < 0){
+							index = this.block_in_use.get_index(x,y,1);
+							if(index >= 0){
+								if(this.block_in_use.get_result()[index] >= 0){
+									source = this.block_in_use.get_result();
+									source_count = this.block_in_use.get_result_count();
+									//inventory_holding = index;
+								}
+							}
 						}
 					}
-				}
+	        	}else{
+					x -= inv_off_x;
+					y -= inv_off_y;
+					if(x >= 0 && x <= inv_win_x && y >=0 && y <= inv_win_y){
+						if(x % inv_slot_x < inv_item_x){
+							index = (int)(x/inv_slot_x);
+						}
+						if((index >= 0) && ((y % inv_slot_y) < inv_item_y)){
+							index += 9*(int)(y/inv_slot_y);
+						}else{
+							index = -1;
+						}
+					}
+					if(index >= 0){
+						if(inventory_holding >= 0){
+							target = inventory;
+							target_count = inventory_count;
+						}else{
+							if(inventory[index] >= 0){
+								source = inventory;
+								source_count = inventory_count;
+								//inventory_holding = index;
+							}
+						}
+					}
+	        	}
 			}else{
 				x -= hbar_off_x;
 				y -= hbar_off_y;
@@ -871,15 +918,39 @@ public class Player implements Creature{
 			
 			if(index >= 0){
 				if(inventory_holding >= 0){
-					target_item = target[index];
-					target_item_count = target_count[index];
-					target[index] = source[inventory_holding];
-					source[inventory_holding] = target_item;
-					target_count[index] = source_count[inventory_holding];
-					source_count[inventory_holding] = target_item_count;
+					if(btn == 3 && target_count[index] == 0){
+						target[index] = source[inventory_holding];
+						half_stack = (int)(source_count[inventory_holding]/2);
+						source_count[inventory_holding] -= half_stack;
+						target_count[index] = half_stack;
+					}else{
+						if(target[index] == source[inventory_holding] && !(target == source && index == inventory_holding)){
+							target_item = target[index];
+							target_item_count = target_count[index] + source_count[inventory_holding];
+							source[inventory_holding] = -1;
+							source_count[inventory_holding] = 0;
+							target[index] = target_item;
+							target_count[index] = target_item_count;
+						}else{
+							target_item = target[index];
+							target_item_count = target_count[index];
+							target[index] = source[inventory_holding];
+							source[inventory_holding] = target_item;
+							target_count[index] = source_count[inventory_holding];
+							source_count[inventory_holding] = target_item_count;
+						}
+					}
 					target_item = -1;
 					target_item_count = 0;
+					half_stack = 0;
 					inventory_holding = -1;
+					if(this.using_block){
+						if(this.block_in_use.get_result() == source){
+							this.block_in_use.Take();
+						}else{
+							this.block_in_use.Use();
+						}
+					}
 				}else{
 					if(source[index] >= 0){
 						inventory_holding = index;
@@ -1122,6 +1193,10 @@ public class Player implements Creature{
         gl.glPopMatrix();
 
 	
+	}
+
+	public int get_block_in_hand() {
+		return hotbar[hbar_select];
 	}
 
 	

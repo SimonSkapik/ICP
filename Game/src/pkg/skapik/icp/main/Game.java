@@ -193,7 +193,7 @@ public class Game{
 
 	public void mouse_clicked(MouseEvent m) {
 		if(this.player.is_in_inventory()){
-			this.player.inventory_click(m.getPoint());
+			this.player.inventory_click(m);
 		}else{
 			if(m.getButton() == 1){ // Left click - HIT IT BABY
 				this.player.Hit();
