@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.FloatBuffer;
-import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
@@ -20,7 +19,6 @@ import pkg.skapik.icp.func.Coords_Manager;
 import pkg.skapik.icp.func.Custom_Draw;
 import pkg.skapik.icp.func.Position;
 import pkg.skapik.icp.func.Renderer;
-import pkg.skapik.icp.func.Vector;
 
 public class Chunk implements Runnable{
 	public static enum state {OLD, CURRENT, NEW};

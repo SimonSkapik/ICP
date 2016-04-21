@@ -19,15 +19,9 @@ public class World_generator {
 	}
 	
 	public int generate_chunk(int origin_x, int origin_z, Block[][][] chunk_map, ArrayList<Foliage> foliage){
-		//int N = 30;
-		//int[][][] chunk_map = new int[16][30][16];
 		int surface = 0;
 		int highest = 0;
-		int biome = 0;
-		int min = 0;
-		int max = 0;
 		
-		int sance = 3;
 		ArrayList<Environmental_seed> seed = new ArrayList<>();
 		boolean gen_trees = true;
 		File f = new File("./World/Chunks/"+origin_x+"_"+origin_z+".txt");
@@ -37,32 +31,15 @@ public class World_generator {
 		
 		for(int z = 0; z < 16; z++){
 			for(int x = 0; x < 16; x++){
-				//surface = (int)(((2+(Math.cos(((origin_x*16)+x)/15.0) + Math.cos(((origin_z*16)+z)/15.0)))*5)+5);
-				//surface = (int) ((2*Math.sin(15*((origin_x*16)+x)/15.0) + Math.cos(((origin_z*16)+z)/15.0)*3 + 5) % 29);
-				//surface = (int)(5*(2+Math.sin(Math.sqrt( (((origin_x*16)+x)/8.0)*(((origin_x*16)+x)/8.0) + (((origin_z*16)+z)/8.0)*(((origin_z*16)+z)/8.0)   ))));
 				Perlin_Noise PN = new Perlin_Noise();
 				PN.offset(1, 1, 1);
-				//surface = 20;
-				//surface = (int)
-				//System.out.println(Math.floor(PN.smoothNoise(((origin_x*16)+x)/100.0f, ((origin_z*16)+z)/150.0f, 1/2, 4)+10));
-				//surface = Math.min(MAX_WORLD_HEIGHT-1,(int)(Math.floor(PN.smoothNoise(((origin_x*16)+x)/100.0f, ((origin_z*16)+z)/150.0f, 1/2, 4)+512)/10.0)+15);
 				surface = Math.min(MAX_WORLD_HEIGHT-1, (int)Math.floor( 
 						(PN.turbulentNoise((((origin_x*16)+x)%150)/150.0f, (((origin_z*16)+z)%150)/150.0f, 1/2.0f, 4 )*60)*
-						(PN.turbulentNoise((((origin_x*16)+x)%750)/750.0f, (((origin_z*16)+z)%750)/750.0f, 1/2.0f, 4 )*5)
-								)+15);
-				/*if(surface < min)
-					min = biome;
-				if(surface > max)
-					max = biome;
-				biome = (surface) % 5;
-				
-				if(biome < 0)
-					biome += 5;
-				*/
+						(PN.turbulentNoise((((origin_x*16)+x)%750)/750.0f, (((origin_z*16)+z)%750)/750.0f, 1/2.0f, 4 )*5))+15);
 				highest = Math.max(surface, highest);
 				chunk_map[x][0][z] = new Block(Block.BEDROCK);
 				chunk_map[x][1][z] = new Block(select_by_chance(Block.BEDROCK,Block.STONE,1,2));
-				//world_map[x][2][z] = select_by_chance(Block.BEDROCK,Block.STONE,1,5);
+				
 				for(int i = 2; i < (surface - 2); i++){
 					if(select_by_chance(0,1,1,7) == 0){
 						switch(ThreadLocalRandom.current().nextInt(1, 7)){
@@ -112,7 +89,7 @@ public class World_generator {
 						chunk_map[x][surface - 2][z] = new Block(Block.DIRT);
 						chunk_map[x][surface - 1][z] = new Block(Block.DIRT);
 						chunk_map[x][surface][z] = new Block(Block.GRASS);
-						if(surface < (World_generator.MAX_WORLD_HEIGHT - 8) && gen_trees){
+						if(surface < (World_generator.MAX_WORLD_HEIGHT - 20) && gen_trees){
 							Environmental_seed S = new Environmental_seed(x, surface + 1, z, Block.GRASS);
 							if(S.is_entity()){
 								seed.add(S);

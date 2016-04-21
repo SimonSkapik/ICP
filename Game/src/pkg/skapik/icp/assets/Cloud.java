@@ -34,7 +34,7 @@ public class Cloud {
 		gl.glPushMatrix();
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glDisable(GL2.GL_TEXTURE_2D);
-		gl.glMaterialfv ( GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white", 0.6f), 0);
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white", 0.6f), 0);
 		gl.glScalef(size_x, size_y, size_z);
 		gl.glScalef(4,2,4);
 		glut.glutSolidCube(1);

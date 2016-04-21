@@ -1,17 +1,10 @@
 package pkg.skapik.icp.assets;
 
-import java.awt.HeadlessException;
-import java.awt.RadialGradientPaint;
 import java.io.PrintWriter;
 import java.util.Random;
 
-import com.jogamp.opengl.util.texture.spi.TGAImage.Header;
-
 public class Tree {
 
-	private static Block[][][] leafes_small = {{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}},{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}},{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}}};
-	private static Block[][][] leafes_big = {{{new Block(-1),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(-1)}},{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}},{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}},{{new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF)}},{{new Block(-1),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(Block.OAK_LEAF),new Block(-1)}}};
-	
 	private int x, y, z, height, mid, bot;
 	
 	public Tree(int x, int y, int z) {
