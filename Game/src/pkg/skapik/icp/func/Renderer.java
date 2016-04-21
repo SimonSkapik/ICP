@@ -59,7 +59,6 @@ public class Renderer implements GLEventListener  {
     private ArrayList<Chunk> chunk_list;
     private World_generator world_gen;
     private Chunk_Loader chunk_loader;
-    private int world_list;
     private int draw_human;
     public int hbar_bg;
     public int hbar_bg_sel;
@@ -636,10 +635,10 @@ public class Renderer implements GLEventListener  {
         //world_list = gl.glGenLists(1);
         //this.pre_render_world();
         // Pripojeni kamery - to bych asi pak prehodil do Game.
-		/*my_cam = new Camera();
+		my_cam = new Camera();
 		cam_thread = my_cam;
 		my_cam.start_cam();
-		cam_thread.start();*/
+		cam_thread.start();
 	}
 	
 	public void bind_texture(int tex){

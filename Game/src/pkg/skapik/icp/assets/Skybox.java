@@ -1,15 +1,8 @@
 package pkg.skapik.icp.assets;
 
 import java.nio.*;
-
-
-import com.jogamp.opengl.util.*;
 import com.jogamp.common.nio.Buffers;
 import javax.media.opengl.GL2;
-
-import org.opencv.core.Point;
-
-import pkg.skapik.icp.func.Coords_Manager;
 import pkg.skapik.icp.func.Custom_Draw;
 
 public class Skybox{

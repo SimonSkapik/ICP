@@ -57,7 +57,6 @@ public class Block {
 	private FloatBuffer vertices;
 	private FloatBuffer normals;
 	//private IntBuffer indices;
-	private boolean is_visible;
 	private boolean[] draw_faces;
 	//private boolean[] draw_faces = {true,true,true,true,true,true};
 	private int faces_to_draw;
@@ -75,7 +74,6 @@ public class Block {
 		CM = coords_manager;
 		this.block_id = id;
 		this.material_color = Custom_Draw.float_color("white");
-		this.is_visible = true;
 		this.draw_faces = vis;
 		this.chunk_distance = distance;
 		this.faces_to_draw = 0;
@@ -124,7 +122,6 @@ public class Block {
 		CM = null;
 		block_id = id;
 		material_color = Custom_Draw.float_color("white");
-		is_visible = false;
 		draw_faces = new boolean[]{false,false,false,false,false,false};
 		chunk_distance = 0;
 		this.visibility_lvl = this.set_visibility();
@@ -139,7 +136,6 @@ public class Block {
 		this.position = null;
 		this.CM = null;
 		material_color = Custom_Draw.float_color("white");
-		is_visible = false;
 		this.visibility_lvl = this.set_visibility();
 		this.solidity_lvl = this.set_solidity();
 		draw_faces = new boolean[]{false,false,false,false,false,false};
@@ -154,7 +150,6 @@ public class Block {
 		this.position = null;
 		this.CM = coords_manager;
 		material_color = Custom_Draw.float_color("white");
-		is_visible = false;
 		this.visibility_lvl = this.set_visibility();
 		this.solidity_lvl = this.set_solidity();
 		draw_faces = new boolean[]{false,false,false,false,false,false};
@@ -169,7 +164,6 @@ public class Block {
 		CM = coords_manager;
 		
 		this.material_color = Custom_Draw.float_color("white");
-		this.is_visible = true;
 		this.draw_faces = vis;
 		this.chunk_distance = distance;
 		this.visibility_lvl = this.set_visibility();

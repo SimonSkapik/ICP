@@ -23,8 +23,6 @@ public class Zombie implements Creature{
 	private Boundery_box boundery;
 	private Mob_move_state motion;
 	private float speed;
-	private float atk_speed;
-	private long last_atk;
 	private float reach;
 	private float notice_radius;
 	private float attack_radius;
@@ -49,8 +47,6 @@ public class Zombie implements Creature{
 		this.aware = false;
 		this.moving = false;
 		this.draw_list = draw_list;
-		this.atk_speed = 1;
-		this.last_atk = 0;
 		this.reach = 1;
 		this.rigor_mortis = new float[12];
 		this.notice_radius = 30;
@@ -136,7 +132,7 @@ public class Zombie implements Creature{
 
 		float m = -0.5f;
 		float p = 0.5f;
-		float f1 = 1/16.0f, f2 = 2/16.0f, f3 = 3/16.0f, f4 = 4/16.0f, f5 = 5/16.0f, f6 = 6/16.0f, f7 = 7/16.0f, f8 = 8/16.0f, f9 = 9/16.0f, fA = 10/16.0f, fB = 11/16.0f, fC = 12/16.0f, fD = 13/16.0f, fE = 14/16.0f, fF = 15/16.0f;
+		float f1 = 1/16.0f, f2 = 2/16.0f, f3 = 3/16.0f, f4 = 4/16.0f, f5 = 5/16.0f, f6 = 6/16.0f, f7 = 7/16.0f, f8 = 8/16.0f, f9 = 9/16.0f, fA = 10/16.0f, fB = 11/16.0f, fC = 12/16.0f, fD = 13/16.0f, fE = 14/16.0f;
 		
 		float vert[] = {m,p,p, m,m,p, p,m,p, p,p,p, p,p,p, p,m,p, p,m,m, p,p,m,  // front, right       // 6x4x3 of vertex coords
 				p,p,m, p,m,m, m,m,m, m,p,m, m,p,m, m,m,m, m,m,p, m,p,p,  // back, left

@@ -1,18 +1,13 @@
 package pkg.skapik.icp.func;
 
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
 import pkg.skapik.icp.assets.Zombie;
 
 public class Mob_move_state {
 
 	private enum State {Stopped, Walking, Jumping};
 	private State state;
-	private Vector wanted_direction;
 	private Vector gravity_vector;
 	private Zombie mob;
-	private float angle_deviation;
 	
 	public Mob_move_state (Zombie mob){
 		this.mob = mob;

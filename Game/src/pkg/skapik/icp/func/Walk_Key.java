@@ -2,13 +2,11 @@ package pkg.skapik.icp.func;
 
 public class Walk_Key {
 
-	private String id;
 	private int code;
 	private boolean pressed;
 	private Vector walk_direction;
 	
 	public Walk_Key(String name, int key_code, Vector dir) {
-		this.id = name;
 		this.code = key_code;
 		this.walk_direction = dir;
 		this.pressed = false;

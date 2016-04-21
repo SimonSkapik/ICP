@@ -7,7 +7,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.GraphicsEnvironment;
@@ -26,16 +25,9 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 // OpenCV
 import org.opencv.core.Core;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.Videoio;
 
-import pkg.skapik.icp.assets.Creature;
 // OUR OWN OP CODE!
 import pkg.skapik.icp.assets.Player;
-import pkg.skapik.icp.assets.Zombie;
 import pkg.skapik.icp.func.*;
 
 

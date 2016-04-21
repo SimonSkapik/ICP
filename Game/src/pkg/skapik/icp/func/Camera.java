@@ -13,33 +13,29 @@ import java.nio.file.Paths;
 import static java.nio.file.StandardCopyOption.*;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 public class Camera extends Thread{
 	
 	private Mat cam_image;
-	private Point obj_at;
+	//private Point obj_at;
 	private VideoCapture cam;
 	private boolean run_cam;
 	private Random rnd;
-	private int roi;
+	//private int roi;
 	private Mat[] cam_alpha;
 	
 	public Camera() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		rnd = new Random();
-		roi = 0;
+		//roi = 0;
 		run_cam = false;
 		cam_image = new Mat(new Size(320,240), 0);
-		obj_at = new Point(0,0);
+		//obj_at = new Point(0,0);
 		cam_alpha = new Mat[4];
 		Mat alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha_0.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		List<Mat> RGBA = new ArrayList<Mat>(4);
@@ -102,7 +98,7 @@ public class Camera extends Thread{
 	    return image;
 	}
 	
-	private void find_object(Mat pic,int from, int to){
+	/*private void find_object(Mat pic,int from, int to){
 		
 		double start = 0;
 		double stop = 0;
@@ -202,12 +198,12 @@ public class Camera extends Thread{
     	
     	//Imgcodecs.imwrite("proc_" + name,image);
 		//System.out.println(times[0] + " " + times[1] + " " + times[2] + " " + times[3] + " " + times[4] + " " + times[5] + " " + times[6]);
-    	mass_center = find_mass_center(proc_image, new Point(0,0),new Point(640,480));
-		obj_at = mass_center;
+    	//mass_center = find_mass_center(proc_image, new Point(0,0),new Point(640,480));
+		//obj_at = mass_center;
 		
-	}
+	//}
 	
-	private Point find_mass_center(Mat img, Point from, Point to){
+	/*private Point find_mass_center(Mat img, Point from, Point to){
 		Point center = new Point(-1,-1);
 		
 		//System.out.println("from x: " + from.x + "from y: " + from.y + "to x: " + to.x + "to y: " + to.y);
@@ -249,7 +245,7 @@ public class Camera extends Thread{
 		result.x = (int)(result.x * k_x);
 		result.y = (int)(result.y * k_y);
 		return result;
-	}
+	}*/
 	
 	public void release_cam(){
 		cam.release();

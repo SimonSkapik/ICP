@@ -261,7 +261,6 @@ public class Player implements Creature{
 	
 	public void Look(int new_x, int new_y) {
 		if(alive){
-			float sensitivity = 0.01f;
 			int d_x = (new_x - this.old_x);
 			int d_y = (new_y - this.old_y);
 	

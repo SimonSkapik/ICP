@@ -9,12 +9,10 @@ import pkg.skapik.icp.assets.World_generator;
 public class Chunk_Loader extends Thread {
 	
 	private Point default_chunk;
-	private Chunk default_chunk_obj;
 	private World_generator world_gen;
 	private Coords_Manager coords_manager;
 	private Renderer renderer;
 	//private ArrayList<Chunk> chunk_list;
-	private int radius;
 	
 	public Chunk_Loader(Renderer renderer) {
 		//radius = 5;
