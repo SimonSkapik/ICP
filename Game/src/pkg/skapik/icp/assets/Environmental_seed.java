@@ -35,9 +35,9 @@ public class Environmental_seed {
 				}
 			}break;
 			case Block.SAND:{
-				if(chance < tree_chance){
+				if(chance < (tree_chance/1.8)){
 					entity = TREE;
-				}else if(chance < (tree_chance+rock_chance)){
+				}else if(chance < ((tree_chance/1.8)+rock_chance)){
 					entity = ROCK;
 				}else{
 					entity = NOTHING;
