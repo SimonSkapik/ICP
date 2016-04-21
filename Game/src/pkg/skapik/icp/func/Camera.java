@@ -6,6 +6,7 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -28,20 +29,34 @@ public class Camera extends Thread{
 	private Point obj_at;
 	private VideoCapture cam;
 	private boolean run_cam;
+	private Random rnd;
 	private int roi;
-	private Mat cam_alpha;
+	private Mat[] cam_alpha;
 	
 	public Camera() {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		
+		rnd = new Random();
 		roi = 0;
 		run_cam = false;
 		cam_image = new Mat(new Size(320,240), 0);
 		obj_at = new Point(0,0);
-		cam_alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		cam_alpha = new Mat[4];
+		Mat alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha_0.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		List<Mat> RGBA = new ArrayList<Mat>(4);
-		Core.split(cam_alpha,RGBA);
-		cam_alpha = RGBA.get(3);
+		Core.split(alpha,RGBA);
+		cam_alpha[0] = RGBA.get(3);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_1",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		RGBA = new ArrayList<Mat>(4);
+		Core.split(alpha,RGBA);
+		cam_alpha[1] = RGBA.get(3);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_2",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		RGBA = new ArrayList<Mat>(4);
+		Core.split(alpha,RGBA);
+		cam_alpha[2] = RGBA.get(3);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_3",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		RGBA = new ArrayList<Mat>(4);
+		Core.split(alpha,RGBA);
+		cam_alpha[3] = RGBA.get(3);
 		try{
 			cam = new VideoCapture();
 			cam.open(0);
@@ -241,7 +256,12 @@ public class Camera extends Thread{
 	}
 	
 	private Mat applyAlpha(Mat src) {
-
+		float noise = rnd.nextFloat()*12.99f;
+		if(noise >= 10){
+			noise = 0;
+		}else{
+			noise = (noise-9);
+		}
 		List<Mat> RGB = new ArrayList<Mat>(3);
 		Core.split(src,RGB);
 		
@@ -249,7 +269,8 @@ public class Camera extends Thread{
 		RGBA.add(RGB.get(0));
 		RGBA.add(RGB.get(1));
 		RGBA.add(RGB.get(2));
-		RGBA.add(cam_alpha);
+		
+		RGBA.add(cam_alpha[(int)noise]);
 		Mat out = new Mat();
 		Core.merge(RGBA, out);
 		return out;
