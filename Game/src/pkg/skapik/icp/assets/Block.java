@@ -29,6 +29,11 @@ public class Block {
 	public static final int SAND = 9;
 	public static final int GRAVEL = 10;
 	public static final int OAK_LOG = 11;
+	public static final int OAK_LEAF = 23;
+	public static final int PALM_LOG = 28;
+	public static final int PALM_LEAF = 29;
+	public static final int SPRUCE_LOG = 30;
+	public static final int SPRUCE_LEAF = 31;
 	public static final int BLOCK_OF_IRON = 12;
 	public static final int BLOCK_OR_GOLD = 13;
 	public static final int BLOCK_OF_DIAMOND = 14;
@@ -39,8 +44,7 @@ public class Block {
 	public static final int ORE_COAL = 19;
 	public static final int ORE_DIAMOND = 20;
 	public static final int ORE_REDSTONE = 21;
-	public static final int ORE_LAPIS = 22;
-	public static final int OAK_LEAF = 23;
+	public static final int ORE_LAPIS = 22;	
 	public static final int COBWEB = 24;
 	public static final int WATER = 25;
 	public static final int MOSSY_COBBLESTONE = 26;
@@ -276,6 +280,18 @@ public class Block {
 				case OAK_LEAF:{
 					return CM.get_texture_coords(faces, num, Texture_List.OAK_LEAFS, cutoff);
 				}
+				case PALM_LOG:{
+					return CM.get_texture_coords(faces, num, Texture_List.PALM_LOG_SIDE, Texture_List.PALM_LOG_CAP, cutoff);
+				}
+				case SPRUCE_LOG:{
+					return CM.get_texture_coords(faces, num, Texture_List.SPRUCE_LOG_SIDE, Texture_List.SPRUCE_LOG_CAP, cutoff);
+				}
+				case SPRUCE_LEAF:{
+					return CM.get_texture_coords(faces, num, Texture_List.SPRUCE_LEAFS, cutoff);
+				}
+				case PALM_LEAF:{
+					return CM.get_texture_coords(faces, num, Texture_List.PALM_LEAFS, cutoff);
+				}
 				case ORE_GOLD:{
 					return CM.get_texture_coords(faces, num, Texture_List.ORE_GOLD, cutoff);
 				}
@@ -478,6 +494,18 @@ public class Block {
 				return 3;
 			}
 			case OAK_LEAF:{
+				return 0;
+			}
+			case PALM_LOG:{
+				return 3;
+			}
+			case PALM_LEAF:{
+				return 0;
+			}
+			case SPRUCE_LOG:{
+				return 3;
+			}
+			case SPRUCE_LEAF:{
 				return 0;
 			}
 			case ORE_GOLD:{

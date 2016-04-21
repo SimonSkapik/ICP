@@ -22,6 +22,12 @@ public class Texture_List {
 	public static final int OAK_LOG_SIDE = 20;
 	public static final int OAK_LOG_CAP = 21;
 	public static final int OAK_LEAFS = 53;
+	public static final int PALM_LOG_SIDE = 213;
+	public static final int PALM_LOG_CAP = 214;
+	public static final int PALM_LEAFS = 215;
+	public static final int SPRUCE_LOG_SIDE = 116;
+	public static final int SPRUCE_LOG_CAP = 132;
+	public static final int SPRUCE_LEAFS = 133;
 	public static final int ORE_COAL = 34;
 	public static final int ORE_IRON = 33;
 	public static final int ORE_GOLD = 32;
