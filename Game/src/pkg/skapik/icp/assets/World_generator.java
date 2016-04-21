@@ -102,6 +102,12 @@ public class World_generator {
 						chunk_map[x][surface - 2][z] = new Block(Block.SAND);
 						chunk_map[x][surface - 1][z] = new Block(Block.SAND);
 						chunk_map[x][surface][z] = new Block(Block.SAND);
+						if(surface < (World_generator.MAX_WORLD_HEIGHT - 8) && gen_trees){
+							Environmental_seed S = new Environmental_seed(x, surface + 1, z, Block.SAND);
+							if(S.is_entity()){
+								seed.add(S);
+							}
+						}
 					}else if(surface < 40){
 						chunk_map[x][surface - 2][z] = new Block(Block.DIRT);
 						chunk_map[x][surface - 1][z] = new Block(Block.DIRT);
