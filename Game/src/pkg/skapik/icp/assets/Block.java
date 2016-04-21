@@ -1,18 +1,11 @@
 package pkg.skapik.icp.assets;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import javax.media.opengl.GL2;
-
-import org.opencv.core.Point;
-
 import com.jogamp.common.nio.Buffers;
-
 import pkg.skapik.icp.func.Custom_Draw;
 import pkg.skapik.icp.func.Position;
 import pkg.skapik.icp.func.Texture_List;
-import pkg.skapik.icp.func.Vertex_manager;
 import pkg.skapik.icp.func.Coords_Manager;
 
 public class Block {
