@@ -204,14 +204,75 @@ public class Tree {
 		}
 	}
 
-	private void growSpruce(Block[][][] chunk_map, PrintWriter out) {
-		//growOak(chunk_map, out);
-		
+	private void growSpruce(Block[][][] chunk_map, PrintWriter out) {		
 		Random rnd = new Random();
-		int trunk = rnd.nextInt(2) + 1;
-		int direction = rnd.nextInt(4) + 1;
-		int height = (rnd.nextInt(3) + 5);
+		int height = (rnd.nextInt(6) + 10);
 		int y = this.y+height;
-		growOak(chunk_map, out);
+		int top = 0;
+		int leaves = 0;
+		// base trunk
+		chunk_map[x][this.y][z] = new Block(Block.SPRUCE_LOG);
+		out.println(x+";"+(this.y)+";"+z+";"+Block.SPRUCE_LOG);
+		chunk_map[x][this.y+1][z] = new Block(Block.SPRUCE_LOG);
+		out.println(x+";"+(this.y+1)+";"+z+";"+Block.SPRUCE_LOG);
+		// leaves + trunk
+		for(int i = this.y+2; i <= y; i++){
+			leaves = rnd.nextInt(10)+1;
+			if(leaves < 5){
+				//empty log
+				chunk_map[x][i][z] = new Block(Block.SPRUCE_LOG);
+				out.println(x+";"+(i)+";"+z+";"+Block.SPRUCE_LOG);	
+			}else{
+				// 2 layer leaves
+				// lower layer
+				for(int j = x-1; j <= x+1; j++){
+					for(int k = z-1; k <= z+1; k++){
+						if(j == x && k == z){
+							chunk_map[j][i][k] = new Block(Block.SPRUCE_LOG);
+							out.println(j+";"+(i)+";"+k+";"+Block.SPRUCE_LOG);
+						}else{
+							chunk_map[j][i][k] = new Block(Block.SPRUCE_LEAF);
+							out.println(j+";"+(i)+";"+k+";"+Block.SPRUCE_LEAF);
+						}
+					}
+				}
+				chunk_map[x-2][i][z] = new Block(Block.SPRUCE_LEAF);
+				out.println((x-2)+";"+(i)+";"+z+";"+Block.SPRUCE_LEAF);
+				chunk_map[x+2][i][z] = new Block(Block.SPRUCE_LEAF);
+				out.println((x+2)+";"+(i)+";"+z+";"+Block.SPRUCE_LEAF);
+				chunk_map[x][i][z-2] = new Block(Block.SPRUCE_LEAF);
+				out.println(x+";"+(i)+";"+(z-2)+";"+Block.SPRUCE_LEAF);
+				chunk_map[x][i][z+2] = new Block(Block.SPRUCE_LEAF);
+				out.println(x+";"+(i)+";"+(z+2)+";"+Block.SPRUCE_LEAF);				
+				i++;
+				// upper layer
+				chunk_map[x][i][z] = new Block(Block.SPRUCE_LOG);
+				out.println(x+";"+(i)+";"+z+";"+Block.SPRUCE_LOG);
+				chunk_map[x-1][i][z] = new Block(Block.SPRUCE_LEAF);
+				out.println((x-1)+";"+(i)+";"+z+";"+Block.SPRUCE_LEAF);
+				chunk_map[x+1][i][z] = new Block(Block.SPRUCE_LEAF);
+				out.println((x+1)+";"+(i)+";"+z+";"+Block.SPRUCE_LEAF);
+				chunk_map[x][i][z-1] = new Block(Block.SPRUCE_LEAF);
+				out.println(x+";"+(i)+";"+(z-1)+";"+Block.SPRUCE_LEAF);
+				chunk_map[x][i][z+1] = new Block(Block.SPRUCE_LEAF);
+				out.println(x+";"+(i)+";"+(z+1)+";"+Block.SPRUCE_LEAF);
+			}
+			top = i;
+		}
+		// top hat
+		chunk_map[x][++top][z] = new Block(Block.SPRUCE_LOG);
+		out.println(x+";"+(top)+";"+z+";"+Block.SPRUCE_LOG);
+		chunk_map[x][++top][z] = new Block(Block.SPRUCE_LOG);
+		out.println(x+";"+(top)+";"+z+";"+Block.SPRUCE_LOG);
+		chunk_map[x-1][top][z] = new Block(Block.SPRUCE_LEAF);
+		out.println((x-1)+";"+(top)+";"+z+";"+Block.SPRUCE_LEAF);
+		chunk_map[x+1][top][z] = new Block(Block.SPRUCE_LEAF);
+		out.println((x+1)+";"+(top)+";"+z+";"+Block.SPRUCE_LEAF);
+		chunk_map[x][top][z-1] = new Block(Block.SPRUCE_LEAF);
+		out.println(x+";"+(top)+";"+(z-1)+";"+Block.SPRUCE_LEAF);
+		chunk_map[x][top][z+1] = new Block(Block.SPRUCE_LEAF);
+		out.println(x+";"+(top)+";"+(z+1)+";"+Block.SPRUCE_LEAF);
+		chunk_map[x][++top][z] = new Block(Block.SPRUCE_LEAF);
+		out.println(x+";"+(top)+";"+z+";"+Block.SPRUCE_LEAF);
 	}
 }
