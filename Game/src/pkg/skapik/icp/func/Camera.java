@@ -45,15 +45,15 @@ public class Camera extends Thread{
 		List<Mat> RGBA = new ArrayList<Mat>(4);
 		Core.split(alpha,RGBA);
 		cam_alpha[0] = RGBA.get(3);
-		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha_1.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_1",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		RGBA = new ArrayList<Mat>(4);
 		Core.split(alpha,RGBA);
 		cam_alpha[1] = RGBA.get(3);
-		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha_2.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_2",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		RGBA = new ArrayList<Mat>(4);
 		Core.split(alpha,RGBA);
 		cam_alpha[2] = RGBA.get(3);
-		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha_3.png",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+		alpha = Imgcodecs.imread("./Assets/Textures/cam_alpha.png_3",Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 		RGBA = new ArrayList<Mat>(4);
 		Core.split(alpha,RGBA);
 		cam_alpha[3] = RGBA.get(3);
@@ -258,9 +258,9 @@ public class Camera extends Thread{
 	private Mat applyAlpha(Mat src) {
 		float noise = rnd.nextFloat()*12.99f;
 		if(noise >= 10){
-			noise = (noise-9);
-		}else{
 			noise = 0;
+		}else{
+			noise = (noise-9);
 		}
 		List<Mat> RGB = new ArrayList<Mat>(3);
 		Core.split(src,RGB);
