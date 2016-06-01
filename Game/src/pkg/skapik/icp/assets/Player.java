@@ -78,13 +78,15 @@ public class Player implements Creature{
 	private boolean using_block;
 	private boolean cam_enabled;
 	private int hand_dir;
+	private boolean sneaking;
+	
 	
 	public Player(Renderer renderer){
 		this.renderer = renderer;
 		this.motion = new Move_state(this);
 		this.current_chunk = new Point(0,0);
 		this.view_distance = 7;
-		this.speed = 0.2f;
+		this.speed = 0.25f;
 		this.reach = 7;
 		this.attack_range = 2.5f;
 		this.rigor_mortis = new float[12];
@@ -95,6 +97,7 @@ public class Player implements Creature{
 		this.in_inventory = false;
 		this.draw_list = -1;
 		this.cam_enabled = false;
+		this.sneaking = false;
 		
 		this.inventory_holding = -1;
 		this.inventory_hover = -1;
@@ -146,7 +149,7 @@ public class Player implements Creature{
 			this.hbar_select = 0;
 			this.health = 20;
 			this.alive = true;
-			this.hotbar = new int[]{Block.SWORD, Block.PICKAXE, Block.AXE, Block.SHOVEL, -1, -1, -1, -1, -1};
+			this.hotbar = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1};
 			this.hotbar_count = new int[]{1, 1, 1, 1, 0, 0, 0, 0, 0};
 			this.inventory = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1,
 										-1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -296,7 +299,12 @@ public class Player implements Creature{
 			}else{
 				dir = new Vector(0,0,0);
 			}
-			this.Move(dir, speed);
+			if(this.sneaking){
+				this.Move(dir, speed*0.5f);
+			}else{
+				this.Move(dir, speed);
+			}
+			
 		}
 	}
 	
@@ -487,17 +495,21 @@ public class Player implements Creature{
 				if(!enemy_hit){
 					Position[] blocks = renderer.get_bloc_in_direction(this.position,this.direction,this.reach);
 					int id = renderer.get_block_id(blocks[0]);
-					if(Block.harvest_lvl(id) == 0 || Block.harvest_lvl(id) == Block.mining_lvl(hotbar[hbar_select]) ){
-						renderer.get_chunk(blocks[0]).remove_block(blocks[0]);
-						int[] space = this.get_free_spot(id);
-						if(space[0] == 1){
-							hotbar[space[1]] = id;
-							hotbar_count[space[1]] += 1;
-						}else if(space[0] == 2){
-							inventory[space[1]] = id;
-							inventory_count[space[1]] += 1;
+					if(Block.crushing_lvl(hotbar[hbar_select]) >= 0){
+						if(Block.crushing_lvl(hotbar[hbar_select]) >= Block.crush_lvl(id) && Block.crush_lvl(id) >= 0){
+							renderer.get_chunk(blocks[0]).remove_block(blocks[0]);
+							int[] drop = Block.get_crush_drop(id);
+							if(drop != null){
+								for(int i = 0; i < drop.length; i+=2){
+									pick_up(drop[i], drop[i+1]);
+								}
+							}
 						}
-						this.save();
+					}else{
+						if(Block.harvest_lvl(id) == 0 || Block.harvest_lvl(id) == Block.mining_lvl(hotbar[hbar_select]) ){
+							renderer.get_chunk(blocks[0]).remove_block(blocks[0]);
+							pick_up(id, 1);
+						}
 					}
 				}
 				hand_move=1;
@@ -507,13 +519,25 @@ public class Player implements Creature{
 			init();
 		}
 	}
+	
+	private void pick_up(int id, int count){
+		int[] space = this.get_free_spot(id);
+		if(space[0] == 1){
+			hotbar[space[1]] = id;
+			hotbar_count[space[1]] += count;
+		}else if(space[0] == 2){
+			inventory[space[1]] = id;
+			inventory_count[space[1]] += count;
+		}
+		this.save();	
+	}
 
 	public void Use() {
 		if(alive){
 			Position[] blocks = renderer.get_bloc_in_direction(this.position,this.direction,this.reach);
 			Block B = renderer.get_block(blocks[0]);
 			if(B.block_id >= 0){
-				if(Block.is_usable(B.block_id)){
+				if(Block.is_usable(B.block_id) && !this.sneaking){
 					B.Use(this,renderer.get_chunk(blocks[0]));
 				}else{
 					if(blocks[1] != null && Block.is_placeable(hotbar[hbar_select])){
@@ -588,6 +612,9 @@ public class Player implements Creature{
 	        gl.glDisable(GL2.GL_DEPTH_TEST); 
 	        gl.glClear(GL2.GL_DEPTH_BUFFER_BIT);
 	        
+	        gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white"), 0);
+	 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);     // texture application method - modulation
+	        
 	        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 	 		gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 	 		
@@ -626,7 +653,7 @@ public class Player implements Creature{
 				        		gl.glTranslated(0, 0, -1);
 				        		gl.glPopMatrix();
 				        	}
-				        	if(inventory[inv_block_id] >= 0){	
+				        	if(inventory[inv_block_id] >= 0){
 					        	gl.glPushMatrix();
 					        	Block B = new Block(inventory[inv_block_id], this.renderer.get_coords_manager());
 					        	
@@ -648,24 +675,29 @@ public class Player implements Creature{
 						        	}
 					        	}
 						        
-						        gl.glPopMatrix();
-						        gl.glPushMatrix();
-					        	gl.glTranslatef(renderer.width*0.01f, renderer.width*-0.015f, 49);
-					        	gl.glRotatef(180, 1, 0, 0);
-					        	gl.glScaled(0.15,0.15,1);
-					        	gl.glDisable(GL2.GL_TEXTURE_2D);
-					        	gl.glPushMatrix();
-					        	gl.glColor3f(1,1,1);
-					        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white"), 0);
-					        	gl.glLineWidth(3);
-					        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
-					        	gl.glPopMatrix();
-					        	gl.glColor3f(0,0,0);
-					        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("black"), 0);
-					        	gl.glLineWidth(1);
-					        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
-					        	gl.glEnable(GL2.GL_TEXTURE_2D);
-						        gl.glPopMatrix();
+						        if(inventory_count[9*row+(block_id-1)] > 1){
+							        gl.glPopMatrix();
+							        gl.glPushMatrix();
+						        	gl.glTranslatef(renderer.width*0.01f, renderer.width*-0.015f, 49);
+						        	gl.glRotatef(180, 1, 0, 0);
+						        	gl.glScaled(0.15,0.15,1);
+						        	gl.glDisable(GL2.GL_TEXTURE_2D);
+						        	gl.glPushMatrix();
+						        	gl.glColor3f(1,1,1);
+						        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("white"), 0);
+						        	gl.glLineWidth(3);
+						        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
+						        	gl.glPopMatrix();
+						        	gl.glColor3f(0,0,0);
+						        	gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("black"), 0);
+						        	gl.glLineWidth(1);
+						        	glut.glutStrokeString(GLUT.STROKE_ROMAN, Integer.toString(inventory_count[9*row+(block_id-1)]));
+						        	gl.glEnable(GL2.GL_TEXTURE_2D);
+							        gl.glPopMatrix();
+						        }else{
+						        	gl.glPopMatrix();
+						        }
+						       
 				        	}
 					        gl.glTranslatef(renderer.width*0.0589f, 0, 0);
 						}
@@ -682,7 +714,6 @@ public class Player implements Creature{
 		        gl.glPopMatrix();
 			}
 	        
-	
 	        gl.glPushMatrix();												// Hotbar:
 	        gl.glTranslatef(renderer.width/3.0f, renderer.height*0.95f, -50.0f);
 	        float d_x = (renderer.width/3.0f)/8.0f;
@@ -742,7 +773,7 @@ public class Player implements Creature{
 		        gl.glTranslatef(d_x, 0, 0);
 	        }
 	        gl.glPopMatrix();
-	       
+
 	        gl.glPushMatrix();// HP bar
 	        gl.glTranslatef(renderer.width*0.99f, renderer.width*0.05f, -5.0f);
 	        gl.glScaled(35,35,1);
@@ -761,6 +792,8 @@ public class Player implements Creature{
 	        
 	    	gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 	 		gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
+	 		
+	 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);     // texture application method - modulation
 	 		
 	        gl.glDepthMask(true);  // enables writes to Z-Buffer
 	        gl.glEnable(GL2.GL_DEPTH_TEST); 
@@ -1058,14 +1091,14 @@ public class Player implements Creature{
 				renderer.bind_texture(1);
 				if(hotbar[hbar_select] >= 0){
 					if(Block.is_tool(hotbar[hbar_select])){
-						if(hotbar[hbar_select] != Block.SHOVEL){
+						if(Block.mining_lvl(hotbar[hbar_select]) != 2){
 							gl.glTranslatef(-0.03f, -0.18f, -0.17f);
 						}else{
 							gl.glTranslatef(-0.05f, -0.23f, -0.17f);
 						}
 						gl.glRotatef(-90, 1, 0, 0);
 						gl.glRotatef(-75, 0, 1, 0);
-						if(hotbar[hbar_select] != Block.SHOVEL){
+						if(Block.mining_lvl(hotbar[hbar_select]) != 2){
 							gl.glRotatef(45, 0, 0, 1);
 						}
 						Block B = new Block(hotbar[hbar_select], this.renderer.get_coords_manager());
@@ -1192,6 +1225,10 @@ public class Player implements Creature{
         gl.glPopMatrix();
 
 	
+	}
+	
+	public void set_sneak(boolean set){
+		this.sneaking = set;
 	}
 
 	public int get_block_in_hand() {

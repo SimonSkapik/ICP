@@ -1,6 +1,8 @@
 package pkg.skapik.icp.assets;
 
 import java.nio.FloatBuffer;
+import java.util.Random;
+
 import javax.media.opengl.GL2;
 import com.jogamp.common.nio.Buffers;
 import pkg.skapik.icp.func.Custom_Draw;
@@ -44,11 +46,44 @@ public class Block {
 	public static final int MOSSY_COBBLESTONE = 26;
 	public static final int WORKBENCH = 27;
 	
-	public static final int PICKAXE = 100;
-	public static final int SHOVEL = 101;
-	public static final int AXE = 102;
-	public static final int SWORD = 103;
+	public static final int WOODEN_PICKAXE = 100;
+	public static final int WOODEN_SHOVEL = 101;
+	public static final int WOODEN_AXE = 102;
+	public static final int WOODEN_SWORD = 103;
+	public static final int WOODEN_HAMMER = 104;
 	
+	public static final int STONE_PICKAXE = 105;
+	public static final int STONE_SHOVEL = 106;
+	public static final int STONE_AXE = 107;
+	public static final int STONE_SWORD = 108;
+	public static final int STONE_HAMMER = 109;
+	
+	public static final int IRON_PICKAXE = 110;
+	public static final int IRON_SHOVEL = 111;
+	public static final int IRON_AXE = 112;
+	public static final int IRON_SWORD = 113;
+	public static final int IRON_HAMMER = 114;
+	
+	public static final int DIAMOND_PICKAXE = 115;
+	public static final int DIAMOND_SHOVEL = 116;
+	public static final int DIAMOND_AXE = 117;
+	public static final int DIAMOND_SWORD = 118;
+	public static final int DIAMOND_HAMMER = 119;
+	
+	public static final int GOLD_PICKAXE = 120;
+	public static final int GOLD_SHOVEL = 121;
+	public static final int GOLD_AXE = 122;
+	public static final int GOLD_SWORD = 123;
+	public static final int GOLD_HAMMER = 124;
+	
+	public static final int ROCK = 200;
+	public static final int COAL = 201;
+	public static final int IRON_SHARD = 202;
+	public static final int GOLD_SHARD = 203;
+	public static final int DIAMOND = 204;
+	public static final int LAPIS = 205;
+	public static final int REDSTONE = 206;
+	public static final int WOODEN_ROD = 207;
 	
 	private Coords_Manager CM;
 	private Position position;
@@ -310,17 +345,104 @@ public class Block {
 				case WORKBENCH:{
 					return CM.get_texture_coords(faces, num, Texture_List.WORKBENCH_SIDE, Texture_List.WORKBENCH_TOP, Texture_List.WORKBENCH_BOT, cutoff);
 				}
-				case SWORD:{
-					return CM.get_texture_coords(faces, num, Texture_List.SWORD, cutoff);
+				case WOODEN_SWORD:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_SWORD, cutoff);
 				}
-				case PICKAXE:{
-					return CM.get_texture_coords(faces, num, Texture_List.PICKAXE, cutoff);
+				case WOODEN_PICKAXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_PICKAXE, cutoff);
 				}
-				case AXE:{
-					return CM.get_texture_coords(faces, num, Texture_List.AXE, cutoff);
+				case WOODEN_AXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_AXE, cutoff);
 				}
-				case SHOVEL:{
-					return CM.get_texture_coords(faces, num, Texture_List.SHOVEL, cutoff);
+				case WOODEN_SHOVEL:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_SHOVEL, cutoff);
+				}
+				case WOODEN_HAMMER:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_HAMMER, cutoff);
+				}
+				case STONE_SWORD:{
+					return CM.get_texture_coords(faces, num, Texture_List.STONE_SWORD, cutoff);
+				}
+				case STONE_PICKAXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.STONE_PICKAXE, cutoff);
+				}
+				case STONE_AXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.STONE_AXE, cutoff);
+				}
+				case STONE_SHOVEL:{
+					return CM.get_texture_coords(faces, num, Texture_List.STONE_SHOVEL, cutoff);
+				}
+				case STONE_HAMMER:{
+					return CM.get_texture_coords(faces, num, Texture_List.STONE_HAMMER, cutoff);
+				}
+				case IRON_SWORD:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_SWORD, cutoff);
+				}
+				case IRON_PICKAXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_PICKAXE, cutoff);
+				}
+				case IRON_AXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_AXE, cutoff);
+				}
+				case IRON_SHOVEL:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_SHOVEL, cutoff);
+				}
+				case IRON_HAMMER:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_HAMMER, cutoff);
+				}
+				case DIAMOND_SWORD:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND_SWORD, cutoff);
+				}
+				case DIAMOND_PICKAXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND_PICKAXE, cutoff);
+				}
+				case DIAMOND_AXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND_AXE, cutoff);
+				}
+				case DIAMOND_SHOVEL:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND_SHOVEL, cutoff);
+				}
+				case DIAMOND_HAMMER:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND_HAMMER, cutoff);
+				}
+				case GOLD_SWORD:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_SWORD, cutoff);
+				}
+				case GOLD_PICKAXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_PICKAXE, cutoff);
+				}
+				case GOLD_AXE:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_AXE, cutoff);
+				}
+				case GOLD_SHOVEL:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_SHOVEL, cutoff);
+				}
+				case GOLD_HAMMER:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_HAMMER, cutoff);
+				}
+				case ROCK:{
+					return CM.get_texture_coords(faces, num, Texture_List.ROCK, cutoff);
+				}
+				case COAL:{
+					return CM.get_texture_coords(faces, num, Texture_List.COAL, cutoff);
+				}
+				case IRON_SHARD:{
+					return CM.get_texture_coords(faces, num, Texture_List.IRON_SHARD, cutoff);
+				}
+				case GOLD_SHARD:{
+					return CM.get_texture_coords(faces, num, Texture_List.GOLD_SHARD, cutoff);
+				}
+				case DIAMOND:{
+					return CM.get_texture_coords(faces, num, Texture_List.DIAMOND, cutoff);
+				}
+				case LAPIS:{
+					return CM.get_texture_coords(faces, num, Texture_List.LAPIS, cutoff);
+				}
+				case REDSTONE:{
+					return CM.get_texture_coords(faces, num, Texture_List.REDSTONE, cutoff);
+				}
+				case WOODEN_ROD:{
+					return CM.get_texture_coords(faces, num, Texture_List.WOODEN_ROD, cutoff);
 				}
 				default:{
 					return CM.get_texture_coords(faces, num, Texture_List.UNKNOWN, cutoff);
@@ -345,9 +467,7 @@ public class Block {
 	public void Use(Player player,Chunk Ch){
 		switch(this.block_id){
 			case OAK_LOG:{
-				if(player.get_block_in_hand() == Block.AXE){
-					Ch.put_block_in_chunk(Block.WORKBENCH, this.position);
-				}
+				Ch.put_block_in_chunk(Block.WORKBENCH, this.position);
 			} break;
 			case WORKBENCH:{
 				player.open_block_interface(this.usable);
@@ -485,7 +605,7 @@ public class Block {
 				return 0;
 			}
 			case PALM_LOG:{
-				return 3;
+				return 0;
 			}
 			case PALM_LEAF:{
 				return 0;
@@ -544,13 +664,22 @@ public class Block {
 		 *  3 wood - axe
 		 */
 		switch(id){
-			case PICKAXE:{
+			case WOODEN_PICKAXE:
+			case STONE_PICKAXE:
+			case IRON_PICKAXE:
+			case DIAMOND_PICKAXE:{
 				return 1;
 			}
-			case SHOVEL:{
+			case WOODEN_SHOVEL:
+			case STONE_SHOVEL:
+			case IRON_SHOVEL:
+			case DIAMOND_SHOVEL:{
 				return 2;
 			}
-			case AXE:{
+			case WOODEN_AXE:
+			case STONE_AXE:
+			case IRON_AXE:
+			case DIAMOND_AXE:{
 				return 3;
 			}
 			default:{
@@ -559,23 +688,101 @@ public class Block {
 		}
 	}
 	
+	public static int crushing_lvl(int id){
+		/*
+		 * -1 non-crushable
+		 *  0 wooden hammer
+		 *  1 stone hammer
+		 *  2 iron hammer
+		 *  3 diamond hammer
+		 */
+		switch(id){
+			case WOODEN_HAMMER:{
+				return 0;
+			}
+			case STONE_HAMMER:{
+				return 1;
+			}
+			case IRON_HAMMER:{
+				return 2;
+			}
+			case DIAMOND_HAMMER:{
+				return 3;
+			}
+			default:{
+				return -1;
+			}
+		}
+	}
+	
+	public static int crush_lvl(int id){
+		/*
+		 * -1 non-crushable
+		 *  0 wooden hammer
+		 *  1 stone hammer
+		 *  2 iron hammer
+		 *  3 diamond hammer
+		 */
+		switch(id){
+			case STONE:
+			case ORE_COAL:
+			case COBBLESTONE:
+			case MOSSY_COBBLESTONE:{
+				return 0;
+			}
+			case ORE_IRON:{
+				return 1;
+			}
+			case ORE_GOLD:
+			case ORE_DIAMOND:{
+				return 2;
+			}
+			case ORE_LAPIS:
+			case ORE_REDSTONE:{
+				return 3;
+			}
+			default:{
+				return -1;
+			}
+		}
+	}
+	
 	public static boolean is_placeable(int id){
 		switch(id){
-			case PICKAXE:{
-				return false;
-			}
-			case SHOVEL:{
-				return false;
-			}
-			case AXE:{
-				return false;
-			}
-			case SWORD:{
-				return false;
-			}
-			case WATER:{
-				return false;
-			}
+			case WOODEN_PICKAXE:
+			case WOODEN_SHOVEL:
+			case WOODEN_AXE:
+			case WOODEN_SWORD:
+			case WOODEN_HAMMER:
+			case STONE_PICKAXE:
+			case STONE_SHOVEL:
+			case STONE_AXE:
+			case STONE_SWORD:
+			case STONE_HAMMER:
+			case IRON_PICKAXE:
+			case IRON_SHOVEL:
+			case IRON_AXE:
+			case IRON_SWORD:
+			case IRON_HAMMER:
+			case DIAMOND_PICKAXE:
+			case DIAMOND_SHOVEL:
+			case DIAMOND_AXE:
+			case DIAMOND_SWORD:
+			case DIAMOND_HAMMER:
+			case GOLD_PICKAXE:
+			case GOLD_SHOVEL:
+			case GOLD_AXE:
+			case GOLD_SWORD:
+			case GOLD_HAMMER:
+			case WATER:
+			case ROCK:
+			case COAL:
+			case IRON_SHARD:
+			case GOLD_SHARD:
+			case DIAMOND:
+			case LAPIS:
+			case REDSTONE:
+			case WOODEN_ROD:
 			case -1:{
 				return false;
 			}
@@ -587,16 +794,31 @@ public class Block {
 
 	public static int dmg(int id){
 		switch(id){
-			case SWORD:{
+			case DIAMOND_SWORD:{
+				return 10;
+			}
+			case DIAMOND_PICKAXE:
+			case DIAMOND_SHOVEL:
+			case DIAMOND_AXE:
+			case DIAMOND_HAMMER:
+			case IRON_SWORD:{
 				return 5;
 			}
-			case SHOVEL:{
-				return 2;
+			case IRON_AXE:
+			case IRON_HAMMER:{
+				return 4;
 			}
-			case AXE:{
+			case WOODEN_SWORD:
+			case IRON_SHOVEL:
+			case IRON_PICKAXE:
+			case STONE_SWORD:{
 				return 3;
 			}
-			case PICKAXE:{
+			case WOODEN_AXE:
+			case STONE_AXE:
+			case STONE_SHOVEL:
+			case STONE_HAMMER:
+			case STONE_PICKAXE:{
 				return 2;
 			}
 			default:{
@@ -607,18 +829,31 @@ public class Block {
 	
 	public static boolean is_transparent(int id){
 		switch(id){
-			case SWORD:{
-				return true;
-			}
-			case SHOVEL:{
-				return true;
-			}
-			case AXE:{
-				return true;
-			}
-			case PICKAXE:{
-				return true;
-			}
+			case WOODEN_PICKAXE:
+			case WOODEN_SHOVEL:
+			case WOODEN_AXE:
+			case WOODEN_SWORD:
+			case WOODEN_HAMMER:
+			case STONE_PICKAXE:
+			case STONE_SHOVEL:
+			case STONE_AXE:
+			case STONE_SWORD:
+			case STONE_HAMMER:
+			case IRON_PICKAXE:
+			case IRON_SHOVEL:
+			case IRON_AXE:
+			case IRON_SWORD:
+			case IRON_HAMMER:
+			case DIAMOND_PICKAXE:
+			case DIAMOND_SHOVEL:
+			case DIAMOND_AXE:
+			case DIAMOND_SWORD:
+			case DIAMOND_HAMMER:
+			case GOLD_PICKAXE:
+			case GOLD_SHOVEL:
+			case GOLD_AXE:
+			case GOLD_SWORD:
+			case GOLD_HAMMER:
 			case WATER:{
 				return true;
 			}
@@ -634,16 +869,39 @@ public class Block {
 
 	public static boolean is_tool(int id){
 		switch(id){
-			case SWORD:{
-				return true;
-			}
-			case SHOVEL:{
-				return true;
-			}
-			case AXE:{
-				return true;
-			}
-			case PICKAXE:{
+			case WOODEN_PICKAXE:
+			case WOODEN_SHOVEL:
+			case WOODEN_AXE:
+			case WOODEN_SWORD:
+			case WOODEN_HAMMER:
+			case STONE_PICKAXE:
+			case STONE_SHOVEL:
+			case STONE_AXE:
+			case STONE_SWORD:
+			case STONE_HAMMER:
+			case IRON_PICKAXE:
+			case IRON_SHOVEL:
+			case IRON_AXE:
+			case IRON_SWORD:
+			case IRON_HAMMER:
+			case DIAMOND_PICKAXE:
+			case DIAMOND_SHOVEL:
+			case DIAMOND_AXE:
+			case DIAMOND_SWORD:
+			case DIAMOND_HAMMER:
+			case GOLD_PICKAXE:
+			case GOLD_SHOVEL:
+			case GOLD_AXE:
+			case GOLD_SWORD:
+			case GOLD_HAMMER:
+			case ROCK:
+			case COAL:
+			case IRON_SHARD:
+			case GOLD_SHARD:
+			case DIAMOND:
+			case LAPIS:
+			case REDSTONE:
+			case WOODEN_ROD:{
 				return true;
 			}
 			default:{
@@ -675,5 +933,40 @@ public class Block {
 				this.usable = null;
 			}
 		}
+	}
+
+	public static int[] get_crush_drop(int id) {
+		Random rnd = new Random();
+		int[] drop;
+		switch(id){
+			case STONE:
+			case COBBLESTONE:
+			case MOSSY_COBBLESTONE:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1)};
+			}break;
+			case ORE_COAL:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),COAL,(rnd.nextInt(3)+1)};
+			}break;
+			case ORE_IRON:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),IRON_SHARD,(rnd.nextInt(3)+1)};
+			}break;
+			case ORE_GOLD:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),GOLD_SHARD,(rnd.nextInt(3)+1)};
+			}break;
+			case ORE_DIAMOND:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),DIAMOND,1};
+			}break;
+			case ORE_LAPIS:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),LAPIS,(rnd.nextInt(1)+1)};
+			}break;
+			case ORE_REDSTONE:{
+				drop = new int[]{ROCK,(rnd.nextInt(4)+1),REDSTONE,(rnd.nextInt(1)+1)};
+			}break;
+			default:{
+				drop = null;
+			}
+		}
+		rnd = null;
+		return drop;
 	}
 }

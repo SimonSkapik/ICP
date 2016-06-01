@@ -40,24 +40,44 @@ public class Texture_List {
 	public static final int WORKBENCH_BOT = 74;
 	
 	
-	public static final int SWORD = 199;
-	public static final int PICKAXE = 200;
-	public static final int AXE = 201;
-	public static final int SHOVEL = 202;
-	/*public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
-	public static final int TNT_BOT = 10;
+	public static final int WOODEN_SWORD = 199;
+	public static final int STONE_SWORD = 200;
+	public static final int IRON_SWORD = 201;
+	public static final int DIAMOND_SWORD = 202;
+	public static final int GOLD_SWORD = 203;
 	
-	*/
+	public static final int WOODEN_HAMMER = 204;
+	public static final int STONE_HAMMER = 207;
+	public static final int IRON_HAMMER = 221;
+	public static final int DIAMOND_HAMMER = 222;
+	public static final int GOLD_HAMMER = 223;
 	
+	public static final int WOODEN_SHOVEL = 220;
+	public static final int STONE_SHOVEL = 219;
+	public static final int IRON_SHOVEL = 218;
+	public static final int DIAMOND_SHOVEL = 217;
+	public static final int GOLD_SHOVEL = 216;
+	
+	public static final int WOODEN_PICKAXE = 229;
+	public static final int STONE_PICKAXE = 230;
+	public static final int IRON_PICKAXE = 231;
+	public static final int DIAMOND_PICKAXE = 232;
+	public static final int GOLD_PICKAXE = 233;
+	
+	public static final int WOODEN_AXE = 234;
+	public static final int STONE_AXE = 235;
+	public static final int IRON_AXE = 236;
+	public static final int DIAMOND_AXE = 237;
+	public static final int GOLD_AXE = 238;
+	
+	public static final int ROCK = 113;
+	public static final int COAL = 114;
+	public static final int IRON_SHARD = 129;
+	public static final int GOLD_SHARD = 130;
+	public static final int DIAMOND = 145;
+	public static final int REDSTONE = 146;
+	public static final int LAPIS = 161;
+	public static final int WOODEN_ROD = 148;
 	
 	public static final int UNKNOWN = 198;
 	public static final int HBAR_BG = 170;

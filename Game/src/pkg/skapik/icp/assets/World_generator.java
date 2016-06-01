@@ -14,13 +14,19 @@ import pkg.skapik.icp.func.Position;
 
 public class World_generator {
 	public static final int MAX_WORLD_HEIGHT = 100;
+	private int seed;
 	
-	public World_generator(){                                                   
+	public World_generator(){
+		Random rnd = new Random();
+		this.seed = 100000;//rnd.nextInt();
 	}
 	
 	public int generate_chunk(int origin_x, int origin_z, Block[][][] chunk_map, ArrayList<Foliage> foliage){
-		int surface = 0;
-		int highest = 0;
+		int surface = 0,global_x,global_z;
+		float surface_F,distance,continent_cutoff = 0.2f;
+		double continent = 0;
+		int highest = 5;
+		int period = 200;
 		
 		ArrayList<Environmental_seed> seed = new ArrayList<>();
 		boolean gen_trees = true;
@@ -29,17 +35,46 @@ public class World_generator {
 			gen_trees = false;
 		}
 		
+		
 		for(int z = 0; z < 16; z++){
 			for(int x = 0; x < 16; x++){
 				Perlin_Noise PN = new Perlin_Noise();
 				PN.offset(1, 1, 1);
-				surface = Math.min(MAX_WORLD_HEIGHT-1, (int)Math.floor( 
-						(PN.turbulentNoise((((origin_x*16)+x)%150)/150.0f, (((origin_z*16)+z)%150)/150.0f, 1/2.0f, 4 )*60)*
-						(PN.turbulentNoise((((origin_x*16)+x)%750)/750.0f, (((origin_z*16)+z)%750)/750.0f, 1/2.0f, 4 )*5))+15);
+				
+
+				global_x = (origin_x*16)+x;
+				global_z = (origin_z*16)+z;
+				distance = (float)(Math.sqrt( global_x*global_x + global_z*global_z )*0.005);
+				global_x = (int)(global_x+this.seed);
+				global_z = (int)(global_z+this.seed);
+				
+				
+				continent = PN.turbulentNoise( (float)((Math.sin((global_x)*0.0005)+1)), (float)((Math.sin((global_z)*0.0005)+1)), 1, 6 )*2;
+				continent = Math.pow(continent, 1.2);
+				if(continent <= continent_cutoff){
+					continent = continent*0.1;
+				}else if(continent >= (continent_cutoff+0.2f)){
+					continent = 1;
+				}else{
+					continent = (Math.cos( Math.PI*(5*(continent-continent_cutoff*0.9) + (1-continent_cutoff*0.1)) )+1)/2.0;
+				}
+				
+				surface_F = Math.min(MAX_WORLD_HEIGHT-1, (
+								( PN.turbulentNoise( (float)((Math.sin((global_x)*0.007)+1)), (float)((Math.sin((global_z)*0.007)+1)), distance, 6 ) * 8)+
+								( PN.turbulentNoise( (float)((Math.sin((global_x)*0.015)+1)), (float)((Math.sin((global_z)*0.015)+1)), distance, 3 ) * 2)
+								)
+							);
+
+				surface_F /= 5;
+				surface = (int)(((Math.pow(surface_F, 2)*35)+15)*continent+3);
+				
+
 				highest = Math.max(surface, highest);
 				chunk_map[x][0][z] = new Block(Block.BEDROCK);
 				chunk_map[x][1][z] = new Block(select_by_chance(Block.BEDROCK,Block.STONE,1,2));
-				
+				chunk_map[x][2][z] = new Block(Block.GRAVEL);
+				chunk_map[x][3][z] = new Block(Block.GRAVEL);
+				chunk_map[x][4][z] = new Block(Block.GRAVEL);
 				for(int i = 2; i < (surface - 2); i++){
 					if(select_by_chance(0,1,1,7) == 0){
 						switch(ThreadLocalRandom.current().nextInt(1, 7)){

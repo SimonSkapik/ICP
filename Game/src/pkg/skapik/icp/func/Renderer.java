@@ -629,16 +629,18 @@ public class Renderer implements GLEventListener  {
         this.skybox = new Skybox(800,gl);
         world_gen = new World_generator();
         this.chunk_loader = new Chunk_Loader(this);
+        //chunk_loader.start();
         chunk_loader.load_chunks(chunk_list, game.get_player().get_view_distance());
         
         //this.world_map = world_gen.get_map();
         //world_list = gl.glGenLists(1);
         //this.pre_render_world();
         // Pripojeni kamery - to bych asi pak prehodil do Game.
-		my_cam = new Camera();
+		
+        /*my_cam = new Camera();
 		cam_thread = my_cam;
 		my_cam.start_cam();
-		cam_thread.start();
+		cam_thread.start();*/
 	}
 	
 	public void bind_texture(int tex){
@@ -747,6 +749,9 @@ public class Renderer implements GLEventListener  {
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPosition,0);
         
         gl.glPushMatrix();
+    	gl.glTranslatef(game.get_player().get_position().getX_F(), game.get_player().get_position().getY_F(), game.get_player().get_position().getZ_F());
+    	
+        gl.glPushMatrix();
         path_rot.setX(path_rot.getX_F()+0.25);
         path_rot.normalize();
         gl.glTranslatef(path_rot.getX_F()*350,path_rot.getY_F()*350,path_rot.getZ_F()*350);
@@ -778,6 +783,7 @@ public class Renderer implements GLEventListener  {
         //gl.glEnable(GL2.GL_LIGHTING);
         gl.glPopMatrix();
         
+        gl.glPopMatrix();
         
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, Custom_Draw.float_color("grey"), 0);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, Custom_Draw.float_color("black"), 0);
@@ -798,10 +804,12 @@ public class Renderer implements GLEventListener  {
         skybox_texture.bind();
         
         gl.glPushMatrix();
+    	gl.glTranslatef(game.get_player().get_position().getX_F(), game.get_player().get_position().getY_F(), game.get_player().get_position().getZ_F());
         gl.glTranslatef(-400.0f, -400.0f, -400.0f);
     	skybox.draw(gl,1);
         gl.glPopMatrix();
         
+
         
         ArrayList<Cloud> to_remove = new ArrayList<>();
         for(Cloud C : clouds){
@@ -818,6 +826,7 @@ public class Renderer implements GLEventListener  {
         for(Cloud C : to_remove){
         	clouds.remove(C);
         }
+
         
         main_texture.bind();
         gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
@@ -831,17 +840,18 @@ public class Renderer implements GLEventListener  {
  		gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
     	                       // provedeni a vykresleni zmen
 
-
-    	
     	zombie_texture.bind();
     	for(Creature C : mobs){
-    		C.Update();
+    		if(C.get_position().distance_to_2d(game.get_player().get_position())<50){
+    			C.Update();
+    		}
     		gl.glPushMatrix();
             gl.glTranslatef(C.get_position().getX_F(), C.get_position().getY_F(), C.get_position().getZ_F());
             C.draw(gl);
             gl.glPopMatrix();
     		
     	}
+    	
     	
     	for(Creature C : dead_mobs){
     		gl.glPushMatrix();
@@ -859,12 +869,14 @@ public class Renderer implements GLEventListener  {
     		gl.glPopMatrix();
     	}
     	
+    	
 
     	steve_texture.bind();
     	gl.glPushMatrix();
     	gl.glTranslatef(game.get_player().get_position().getX_F(), game.get_player().get_position().getY_F(), game.get_player().get_position().getZ_F());
     	game.get_player().draw(gl);
     	gl.glPopMatrix();
+    	
     	
     	if(this.game.get_player().is_in_water()){
     		fogColor = new float[]{0.07f,0.153f,0.239f,1.0f};
@@ -907,16 +919,19 @@ public class Renderer implements GLEventListener  {
 	    	game.get_player().draw_CAM(gl);
 	    	
     	}	
+    	
 	    	
 	    gl.glFlush();
+	    
     	
     	game.get_player().Update();
  		if(frame_count >= 360000000){
  			frame_count = 0;
  		}
+ 		
  		int chance = Math.abs(random.nextInt())%1000;
  		if(sun_angle < Math.PI){
-	 		if(mobs.size() < 20 && chance < 10){
+	 		if(mobs.size() < 20 && chance < 5){
 	 			int spawn_y = -1;
 	 			float spawn_x = 0;
 	 			float spawn_z = 0;

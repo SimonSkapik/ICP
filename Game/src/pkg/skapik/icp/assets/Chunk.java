@@ -25,7 +25,8 @@ public class Chunk implements Runnable{
 	
 	//private int[][][] chunk_map;
 	private Block[][][] chunk_map;
-	private int x,z,highest_block;
+	private int x,z;
+	private int highest_block;
 	private Coords_Manager CM;
 	private state age;	
 	private Renderer renderer;
@@ -97,7 +98,8 @@ public class Chunk implements Runnable{
 		
 	}
 	
-	private void add_draw_data(Block b) {
+	public void add_draw_data(Block b) {
+		
 		FloatBuffer buff = b.get_vertices();
 		for (int j = 0; j < buff.capacity(); j++){
 			vertices.put(buff.get(j));
@@ -124,92 +126,98 @@ public class Chunk implements Runnable{
 	}
 
 
-	private boolean[] check_if_visible(int x, int y, int z) {
-		boolean[] faces = {false,false,false,false,false,false};
-		boolean visible = false;
-		byte vis = chunk_map[x][y][z].get_visibility();
-		int x2,y2,z2;
-		
-		x2 = x; // blok pred front face?
-		y2 = y;
-		z2 = z+1;
-		if(z2 <= 15){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
-				faces[0] = true;
-				visible = true;
+	public boolean[] check_if_visible(int x, int y, int z) {
+		if(chunk_map != null){
+			boolean[] faces = {false,false,false,false,false,false};
+			boolean visible = false;
+			byte vis = chunk_map[x][y][z].get_visibility();
+			int x2,y2,z2;
+			
+			x2 = x; // blok pred front face?
+			y2 = y;
+			z2 = z+1;
+			if(z2 <= 15){
+				if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+					faces[0] = true;
+					visible = true;
+				}
+			}else{
+				if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
+					faces[0] = true;
+					visible = true;
+				}
 			}
-		}else{
-			if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
-				faces[0] = true;
-				visible = true;
+					
+			z2 = z-1; // blok pred back face? (x2 a y2 se nemeni)
+			if(z2 >= 0){
+				if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+					faces[2] = true;
+					visible = true;
+				}
+			}else{
+				if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
+					faces[2] = true;
+					visible = true;
+				}
 			}
-		}
-				
-		z2 = z-1; // blok pred back face? (x2 a y2 se nemeni)
-		if(z2 >= 0){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
-				faces[2] = true;
-				visible = true;
+			
+			x2 = x+1; // blok pred right face? (y2 se nemeni)
+			z2 = z;
+			if(x2 <= 15){
+				if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+					faces[1] = true;
+					visible = true;
+				}
+			}else{
+				if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
+					faces[1] = true;
+					visible = true;
+				}
 			}
-		}else{
-			if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
-				faces[2] = true;
-				visible = true;
+			
+			x2 = x-1; // blok pred left face? (y2 a z2 se nemeni)
+			if(x2 >= 0){
+				if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+					faces[3] = true;
+					visible = true;
+				}
+			}else{
+				if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
+					faces[3] = true;
+					visible = true;
+				}
 			}
-		}
-		
-		x2 = x+1; // blok pred right face? (y2 se nemeni)
-		z2 = z;
-		if(x2 <= 15){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
-				faces[1] = true;
-				visible = true;
-			}
-		}else{
-			if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
-				faces[1] = true;
-				visible = true;
-			}
-		}
-		
-		x2 = x-1; // blok pred left face? (y2 a z2 se nemeni)
-		if(x2 >= 0){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
-				faces[3] = true;
-				visible = true;
-			}
-		}else{
-			if(get_visibility(renderer.get_block_id(this.x*16+x2,y2,this.z*16+z2)) < vis){
-				faces[3] = true;
-				visible = true;
-			}
-		}
-		
-		x2 = x; // blok pred top face? (z2 se nemeni)
-		y2 = y+1;
-		if(y2 < World_generator.MAX_WORLD_HEIGHT){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+			
+			x2 = x; // blok pred top face? (z2 se nemeni)
+			y2 = y+1;
+			if(y2 < World_generator.MAX_WORLD_HEIGHT){
+				try{
+					if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+						faces[4] = true;
+						visible = true;
+					}
+				}catch(NullPointerException E){
+					System.err.println("Caught: ["+x2+", "+y2+","+z2+"]" );
+				}
+			}else{
 				faces[4] = true;
 				visible = true;
 			}
-		}else{
-			faces[4] = true;
-			visible = true;
-		}
-
-		y2 = y-1;// blok pred top face? (x2 a z2 se nemeni)
-		if(y2 >= 0){
-			if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+	
+			y2 = y-1;// blok pred top face? (x2 a z2 se nemeni)
+			if(y2 >= 0){
+				if(get_visibility(chunk_map[x2][y2][z2].block_id) < vis){
+					faces[5] = true;
+					visible = true;
+				}
+			}else{
 				faces[5] = true;
 				visible = true;
 			}
-		}else{
-			faces[5] = true;
-			visible = true;
-		}
-		
-		if(visible){
-			return faces;
+			
+			if(visible){
+				return faces;
+			}
 		}
 		boolean[] res = {false};
 		return res;
@@ -281,6 +289,7 @@ public class Chunk implements Runnable{
 	@Override
 	public void run() {
 		if(!this.runnig){
+			try{
 			this.runnig = true;
 			this.is_ready = false;
 			visible_blocks.clear();
@@ -320,6 +329,12 @@ public class Chunk implements Runnable{
 			normals.rewind();
 			this.is_ready = true;
 			this.runnig = false;
+			}catch(NullPointerException E){
+				this.is_ready = false;
+				this.runnig = false;
+				Thread.yield();
+				System.err.println("Caught it tooo!");
+			}
 		}
 	}
 

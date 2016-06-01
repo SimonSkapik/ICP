@@ -130,6 +130,8 @@ public class Game{
 	public void key_pressed(int code, int id) { // Kocka slapla na klavesnici
 		if(code == 87 || code == 83 || code == 65 || code == 68 || code == 32 || code == 17){
 			player.Controll(code, id);
+		}else if(code == 16){
+			player.set_sneak(true);
 		}else if(code == 27){
 			String[] buttons = { "Yeah... :-|", "Psych! JK :D" };
 			int dialogResult = JOptionPane.showOptionDialog(null, "Already leaving? :-(", "Srsly??", JOptionPane.YES_NO_OPTION,
@@ -148,6 +150,8 @@ public class Game{
 			}
 			player.open_inventory();
 		}else if(code == 84){
+			player.get_renderer().add_time(-100);
+		}else if(code == 90){
 			player.get_renderer().add_time(100);
 		}else if(code == 67){
 			player.toggle_cam();
@@ -159,6 +163,8 @@ public class Game{
 	public void key_released(int code, int id) { // Kocka slezla z klavesnice
 		if(code == 87 || code == 83 || code == 65 || code == 68 || code == 32 || code == 17){
 			player.Controll(code, id);
+		}else if(code == 16){
+			player.set_sneak(false);
 		}
 	}
 

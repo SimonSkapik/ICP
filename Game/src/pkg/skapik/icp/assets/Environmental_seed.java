@@ -16,7 +16,7 @@ public class Environmental_seed {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		float tree_chance = 3;
+		float tree_chance = 4;
 		float foliage_chance = 10;
 		float rock_chance = 0.5f;
 		
@@ -35,9 +35,9 @@ public class Environmental_seed {
 				}
 			}break;
 			case Block.SAND:{
-				if(chance < (tree_chance/1.8)){
+				if(chance < (tree_chance/5.0)){
 					entity = TREE;
-				}else if(chance < ((tree_chance/1.8)+rock_chance)){
+				}else if(chance < ((tree_chance/5.0)+rock_chance)){
 					entity = ROCK;
 				}else{
 					entity = NOTHING;
